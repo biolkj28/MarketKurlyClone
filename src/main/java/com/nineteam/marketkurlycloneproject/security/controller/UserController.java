@@ -42,6 +42,7 @@ public class UserController {
 
     @GetMapping("/test2")
     public Optional<String> test2 () {
+        System.out.println("오냐?");
         return SecurityUtil.getCurrentLoginId();
     }
 
