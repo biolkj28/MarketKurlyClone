@@ -25,8 +25,8 @@ public class User {
     @Column(nullable = false, length = 8)
     private String nickName;
 
-    @Column(nullable = false)
-    private String address;
+//    @Column(nullable = false)
+//    private String address;
 
     @Column(nullable = false)
     private String role;

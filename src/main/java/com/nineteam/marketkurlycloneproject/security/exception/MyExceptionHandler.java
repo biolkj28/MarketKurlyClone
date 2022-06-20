@@ -8,7 +8,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import javax.servlet.http.HttpServletRequest;
 
 
 @Slf4j
@@ -18,9 +17,9 @@ public class MyExceptionHandler {
     /**
      * @valid 유효성체크에 통과하지 못하면  MethodArgumentNotValidException 이 발생한다.
      */
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ResponseDto> methodValidException(MethodArgumentNotValidException e, HttpServletRequest request) {
-        log.warn("MethodArgumentNotValidException 발생!!! url:{}, trace:{}", request.getRequestURI(), e.getStackTrace());
+    public ResponseEntity<ResponseDto> methodValidException(MethodArgumentNotValidException e) {
         ResponseDto errorResponse = new ResponseDto(false, e.getBindingResult().getFieldError().getDefaultMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
@@ -30,6 +29,5 @@ public class MyExceptionHandler {
         ResponseDto errorResponse = new ResponseDto(false, e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
-
 
 }
