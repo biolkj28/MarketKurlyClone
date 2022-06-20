@@ -3,6 +3,7 @@ package com.nineteam.marketkurlycloneproject.domain.models;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+
 import javax.persistence.*;
 
 @NoArgsConstructor
