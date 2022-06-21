@@ -17,6 +17,6 @@ public class LoginDto {
     private String loginId;
 
     @NotNull(message = "비밀번호를 입력해주세요")
-    @Size(min = 10, max = 16, message = "6자 이상 16자 이하로 입력해주세요")
+    @Size(min = 10, max = 16, message = "10자 이상 16자 이하로 입력해주세요")
     private String password;
 }
