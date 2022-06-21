@@ -6,7 +6,6 @@ import com.nineteam.marketkurlycloneproject.security.model.User;
 import com.nineteam.marketkurlycloneproject.security.repository.UserRepository;
 import com.nineteam.marketkurlycloneproject.security.validator.UserServiceValidator;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
