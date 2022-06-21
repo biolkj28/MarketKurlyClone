@@ -2,15 +2,11 @@ package com.nineteam.marketkurlycloneproject.security.controller;
 
 import com.nineteam.marketkurlycloneproject.security.dto.*;
 import com.nineteam.marketkurlycloneproject.security.service.UserService;
-import com.nineteam.marketkurlycloneproject.security.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,18 +28,6 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody LoginDto loginDto) {
         return userService.login(loginDto);
-    }
-
-
-    @GetMapping("/test")
-    public String test (@AuthenticationPrincipal UserDetails userDetails) {
-        return userDetails.getUsername();
-    }
-
-    @GetMapping("/test2")
-    public Optional<String> test2 () {
-        System.out.println("오냐?");
-        return SecurityUtil.getCurrentLoginId();
     }
 
 }

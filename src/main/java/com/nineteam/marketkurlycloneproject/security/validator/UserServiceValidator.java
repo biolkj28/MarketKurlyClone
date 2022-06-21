@@ -32,12 +32,14 @@ public class UserServiceValidator {
         Pattern passPattern = Pattern.compile("(\\d)\\1\\1");
         Matcher passMatcher = passPattern.matcher(userDto.getPassword());
 
+        // Id 검증
         if (userRepository.findOneByLoginId(userDto.getLoginId()).orElse(null) != null)
             throw new IllegalArgumentException("이미 등록된 아이디 입니다.");
 
         if (!userDto.getLoginId().matches("^[a-zA-Z\\d]*$") || userDto.getLoginId().matches("^[0-9]*$"))
             throw new IllegalArgumentException("영문 혹은 영문과 숫자 조합만 사용 가능합니다.");
 
+        // 비밀번호 검증
         if (!Objects.equals(userDto.getPassword(), userDto.getPasswordcheck()))
             throw new IllegalArgumentException("비밀번호 입력내용이 동일하지 않습니다.");
 
@@ -47,6 +49,7 @@ public class UserServiceValidator {
         if (passMatcher.find())
             throw new IllegalArgumentException("동일한 숫자 3개 이상 연속 사용 불가");
 
+        // 닉네임 검증
         if (!userDto.getNickname().matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*"))
             throw new IllegalArgumentException("한글만 사용 가능합니다.");
     }

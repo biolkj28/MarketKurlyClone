@@ -1,15 +1,10 @@
 package com.nineteam.marketkurlycloneproject.security.jwt;
 
-import com.nineteam.marketkurlycloneproject.security.dto.ResponseDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,8 +21,6 @@ import java.util.stream.Collectors;
 @Component
 //  유효성 검증 클래스
 public class TokenProvider implements InitializingBean { // Bean 생성
-
-    private final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
 
     private static final String AUTHORITIES_KEY = "auth";
 
