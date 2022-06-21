@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.nineteam.marketkurlycloneproject.domain.model.Comment;
 import com.nineteam.marketkurlycloneproject.domain.model.Products;
 import com.nineteam.marketkurlycloneproject.domain.repository.CommentRepository;
+import com.nineteam.marketkurlycloneproject.domain.repository.ProductsRepository;
 import com.nineteam.marketkurlycloneproject.security.model.User;
 import com.nineteam.marketkurlycloneproject.security.repository.UserRepository;
 import com.nineteam.marketkurlycloneproject.web.dto.CommentRequestDto;
@@ -24,6 +25,7 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 
 
 @Service
@@ -47,7 +49,7 @@ public class CommentService {
         Products products = productsRepository.findById(productsId).orElseThrow(
                 () -> new IllegalArgumentException("유효하지 않는 상품입니다."));
 
-        List<Comment> commentList = commentRepository.findAllByProductId(productsId);
+        List<Comment> commentList = commentRepository.findAllByProductsId(productsId);
 
         for(Comment comments : commentList){
 
@@ -63,6 +65,8 @@ public class CommentService {
     public Comment creatComment(CommentRequestDto commentRequestDto, MultipartFile multipartFile, UserDetails userDetails) {
         User user = userRepository.findOneByLoginId(userDetails.getUsername()).orElseThrow(
                 ()-> new IllegalArgumentException("유효하지 않은 아이디입니다."));
+
+        Long productsId = commentRequestDto.getProducts().getId();
 
         Products products = productsRepository.findById(productsId).orElseThrow(
                 ()-> new IllegalArgumentException("유효하지 않은 상품입니다."));
@@ -93,10 +97,9 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
 
-        commentRepository.deleteById(commentId);
-
         amazonS3Client.deleteObject(S3Bucket,comment.getFileName());
 
+        commentRepository.deleteById(commentId);
     }
 
     @Transactional

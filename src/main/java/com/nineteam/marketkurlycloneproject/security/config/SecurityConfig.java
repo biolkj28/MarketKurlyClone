@@ -57,7 +57,7 @@ public class SecurityConfig {
                 .and()  // 토큰 없는 상태에서 진입 허가
                 .authorizeRequests()
                 .antMatchers("/user/test").hasRole("USER")
-                .antMatchers("/", "/user/**", "/css/**", "/images/**",
+                .antMatchers("/", "/user/**", "/css/**", "/images/**", "/comment/**",
                         "/js/**", "/h2-console/**", "/favicon.ico").permitAll()
                 .anyRequest().authenticated()
 
