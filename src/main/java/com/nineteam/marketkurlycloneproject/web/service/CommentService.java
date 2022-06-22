@@ -5,8 +5,9 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.nineteam.marketkurlycloneproject.domain.model.Comment;
+import com.nineteam.marketkurlycloneproject.domain.model.Products;
 import com.nineteam.marketkurlycloneproject.domain.repository.CommentRepository;
-import com.nineteam.marketkurlycloneproject.domain.repository.ProductsRepository;
+import com.nineteam.marketkurlycloneproject.domain.repository.ProductRepository;
 import com.nineteam.marketkurlycloneproject.security.model.User;
 import com.nineteam.marketkurlycloneproject.security.repository.UserRepository;
 import com.nineteam.marketkurlycloneproject.web.dto.CommentRequestDto;
@@ -24,7 +25,7 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Objects;
 
 
 @Service
@@ -33,7 +34,7 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
-    private final ProductsRepository productsRepository;
+    private final ProductRepository productsRepository;
 
     @Value("${S3Bucket}")
     private String S3Bucket;
@@ -48,9 +49,11 @@ public class CommentService {
         Products products = productsRepository.findById(productsId).orElseThrow(
                 () -> new IllegalArgumentException("유효하지 않는 상품입니다."));
 
-        List<Comment> commentList = commentRepository.findAllByProductsId(productsId);
+        List<Comment> commentList = commentRepository.findAllByProducts(products);
 
-        for(Comment comments : commentList){
+        for (Comment comments : commentList) {
+
+//            comments.viewCount();
 
             CommentResponseDto commentResponseDto = new CommentResponseDto(comments);
 
@@ -63,17 +66,16 @@ public class CommentService {
     @Transactional
     public Comment creatComment(CommentRequestDto commentRequestDto, MultipartFile multipartFile, UserDetails userDetails) {
         User user = userRepository.findOneByLoginId(userDetails.getUsername()).orElseThrow(
-                ()-> new IllegalArgumentException("유효하지 않은 아이디입니다."));
+                () -> new IllegalArgumentException("유효하지 않은 아이디입니다."));
 
         Long productsId = commentRequestDto.getProducts().getId();
 
         Products products = productsRepository.findById(productsId).orElseThrow(
-                ()-> new IllegalArgumentException("유효하지 않은 상품입니다."));
+                () -> new IllegalArgumentException("유효하지 않은 상품입니다."));
 
         FileDataDto fileDataDto = saveImage(multipartFile);
         commentRequestDto.setCommentImg(fileDataDto.getImagePath());
         commentRequestDto.setFileName(fileDataDto.getImageName());
-
 
         Comment comment = new Comment(commentRequestDto, products, user);
         commentRepository.save(comment);
@@ -82,29 +84,32 @@ public class CommentService {
     }
 
     @Transactional
-    public void updateComment(Long commentId, CommentRequestDto commentRequestDto) {
+    public void updateComment(Long commentId, CommentRequestDto commentRequestDto, UserDetails userDetails) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new IllegalArgumentException("유효하지 않는 댓글입니다."));
 
-        commentRequestDto.setCommentImg(comment.getCommentImg());
-        commentRequestDto.setFileName(comment.getFileName());
-        comment.update(commentRequestDto);
+        if(Objects.equals(comment.getUser().getLoginId(), userDetails.getUsername())) {
+            commentRequestDto.setCommentImg(comment.getCommentImg());
+            commentRequestDto.setFileName(comment.getFileName());
+            comment.update(commentRequestDto);
+        }else throw new IllegalArgumentException("작성자와 로그인 정보가 다릅니다.");
     }
 
     @Transactional
-    public void deleteComment(Long commentId) {
+    public void deleteComment(Long commentId, UserDetails userDetails) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
 
-        amazonS3Client.deleteObject(S3Bucket,comment.getFileName());
-
-        commentRepository.deleteById(commentId);
+        if(Objects.equals(comment.getUser().getLoginId(), userDetails.getUsername())) {
+            amazonS3Client.deleteObject(S3Bucket, comment.getFileName());
+            commentRepository.deleteById(commentId);
+        }else throw new IllegalArgumentException("작성자와 로그인 정보가 다릅니다.");
     }
 
     @Transactional
     public FileDataDto saveImage(MultipartFile multipartFile) {
         // 파일 이름
-        String originalName = DateTime.now().toString().replaceAll("[+:]",".")+multipartFile.getOriginalFilename();
+        String originalName = DateTime.now().toString().replaceAll("[+:]", ".") + multipartFile.getOriginalFilename();
         // 파일 크기
         long size = multipartFile.getSize();
 

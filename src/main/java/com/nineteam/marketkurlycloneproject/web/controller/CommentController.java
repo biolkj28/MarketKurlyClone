@@ -35,14 +35,15 @@ public class CommentController {
     }
 
     @PutMapping("/comment/{commentId}")
-    public ResponseEntity<Long> updateComment(@PathVariable Long commentId, @RequestBody CommentRequestDto commentRequestDto) {
-        commentService.updateComment(commentId, commentRequestDto);
+    public ResponseEntity<Long> updateComment(@PathVariable Long commentId, @RequestBody CommentRequestDto commentRequestDto,
+                                              @AuthenticationPrincipal UserDetails userDetails) {
+        commentService.updateComment(commentId, commentRequestDto, userDetails);
         return new ResponseEntity<>(commentRequestDto.getCommentId(), HttpStatus.OK);
     }
 
     @DeleteMapping("/comment/{commentId}")
-    public ResponseEntity<Long> deleteComment(@PathVariable Long commentId) {
-        commentService.deleteComment(commentId);
+    public ResponseEntity<Long> deleteComment(@PathVariable Long commentId, @AuthenticationPrincipal UserDetails userDetails) {
+        commentService.deleteComment(commentId, userDetails);
         return new ResponseEntity<>(commentId, HttpStatus.OK);
     }
 }
