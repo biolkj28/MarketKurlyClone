@@ -12,6 +12,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findAllByProducts(Products products);
 
     @Modifying
-    @Query("update comment c set c.view = c.view + 1 where c.id = :id")
+    @Query("update Comment c set c.view = c.view + 1 where c.id = :id")
     int updateView(Long id);
 }
