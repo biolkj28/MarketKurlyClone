@@ -5,7 +5,6 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.nineteam.marketkurlycloneproject.domain.model.Comment;
-import com.nineteam.marketkurlycloneproject.domain.model.Products;
 import com.nineteam.marketkurlycloneproject.domain.repository.CommentRepository;
 import com.nineteam.marketkurlycloneproject.domain.repository.ProductsRepository;
 import com.nineteam.marketkurlycloneproject.security.model.User;

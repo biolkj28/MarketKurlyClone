@@ -1,7 +1,6 @@
 package com.nineteam.marketkurlycloneproject.web.dto;
 
 import com.nineteam.marketkurlycloneproject.domain.model.Comment;
-import com.nineteam.marketkurlycloneproject.domain.model.Products;
 import com.nineteam.marketkurlycloneproject.security.model.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +14,6 @@ public class CommentResponseDto {
     private User user;
     private String title;
     private String comment;
-    private String createdAt;
     private String commentImg;
 
     public CommentResponseDto(Comment comment) {
@@ -24,7 +22,6 @@ public class CommentResponseDto {
         this.products = comment.getProducts();
         this.title = comment.getTitle();
         this.comment = comment.getComment();
-        this.createdAt = comment.getCreatedAt();
         this.commentImg = comment.getCommentImg();
     }
 
