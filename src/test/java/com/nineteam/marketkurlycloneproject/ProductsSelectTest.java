@@ -6,6 +6,7 @@ import com.nineteam.marketkurlycloneproject.domain.model.QCategory;
 import com.nineteam.marketkurlycloneproject.domain.model.QProducts;
 import com.nineteam.marketkurlycloneproject.web.dto.MainForProductResponseDto;
 import com.nineteam.marketkurlycloneproject.web.dto.QMainForProductResponseDto;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.aspectj.lang.annotation.Before;
 import org.assertj.core.api.Assertions;
@@ -87,10 +88,11 @@ public class ProductsSelectTest {
                         QProducts.products.lprice
                 ))
                 .from(QProducts.products)
+                .orderBy(NumberExpression.random().asc())
                 .limit(20)
                 .fetch();
 
-        Assertions.assertThat(products.size()).isEqualTo(22);
+        Assertions.assertThat(products.size()).isEqualTo(20);
     }
 
 
