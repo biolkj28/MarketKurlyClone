@@ -77,6 +77,4 @@ public class Comment extends TimeStamped {
 //        this.view++;
 //    }
 
-
-
 }

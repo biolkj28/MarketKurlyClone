@@ -10,6 +10,7 @@ import com.nineteam.marketkurlycloneproject.domain.repository.CommentRepository;
 import com.nineteam.marketkurlycloneproject.domain.repository.ProductRepository;
 import com.nineteam.marketkurlycloneproject.security.model.User;
 import com.nineteam.marketkurlycloneproject.security.repository.UserRepository;
+import com.nineteam.marketkurlycloneproject.web.dto.CommentDetailsDto;
 import com.nineteam.marketkurlycloneproject.web.dto.CommentRequestDto;
 import com.nineteam.marketkurlycloneproject.web.dto.CommentResponseDto;
 import com.nineteam.marketkurlycloneproject.web.dto.FileDataDto;
@@ -52,15 +53,26 @@ public class CommentService {
         List<Comment> commentList = commentRepository.findAllByProducts(products);
 
         for (Comment comments : commentList) {
-
-//            comments.viewCount();
-
             CommentResponseDto commentResponseDto = new CommentResponseDto(comments);
-
             commentResponseDtoList.add(commentResponseDto);
         }
 
         return commentResponseDtoList;
+    }
+
+    public CommentDetailsDto showComment(Long productsId) {
+
+        Products products = productsRepository.findById(productsId).orElseThrow(
+                () -> new IllegalArgumentException("유효하지 않는 상품입니다."));
+
+        Comment comment = new Comment();
+
+        String comments = comment.getComment();
+        String commentImg = comment.getCommentImg();
+
+
+        return new CommentDetailsDto(products, comments, commentImg);
+
     }
 
     @Transactional
@@ -89,6 +101,7 @@ public class CommentService {
                 () -> new IllegalArgumentException("유효하지 않는 댓글입니다."));
 
         if (Objects.equals(comment.getUser().getLoginId(), userDetails.getUsername())) {
+            commentRequestDto.setLoginId(userDetails.getUsername());
             commentRequestDto.setCommentImg(comment.getCommentImg());
             commentRequestDto.setFileName(comment.getFileName());
             comment.update(commentRequestDto);
@@ -140,5 +153,6 @@ public class CommentService {
 
         return fileDataDto;
     }
+
 
 }

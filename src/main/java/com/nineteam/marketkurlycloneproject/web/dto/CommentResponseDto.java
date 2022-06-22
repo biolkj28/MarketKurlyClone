@@ -14,7 +14,6 @@ public class CommentResponseDto {
     private Long productsId;
     private String loginId;
     private String title;
-    private String comment;
     private String createdAt;
     private String commentImg;
     private int view;
@@ -24,11 +23,7 @@ public class CommentResponseDto {
         this.productsId = comment.getProducts().getId();
         this.loginId = comment.getUser().getLoginId();
         this.title = comment.getTitle();
-        this.comment = comment.getComment();
         this.createdAt = comment.getCreatedAt();
-        this.commentImg = comment.getCommentImg();
         this.view = comment.getView();
-
     }
-
 }

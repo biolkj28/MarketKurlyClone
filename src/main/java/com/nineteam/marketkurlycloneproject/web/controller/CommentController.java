@@ -1,6 +1,7 @@
 package com.nineteam.marketkurlycloneproject.web.controller;
 
 import com.nineteam.marketkurlycloneproject.domain.model.Comment;
+import com.nineteam.marketkurlycloneproject.web.dto.CommentDetailsDto;
 import com.nineteam.marketkurlycloneproject.web.dto.CommentRequestDto;
 import com.nineteam.marketkurlycloneproject.web.dto.CommentResponseDto;
 import com.nineteam.marketkurlycloneproject.web.service.CommentService;
@@ -23,8 +24,14 @@ public class CommentController {
 
     @GetMapping("/comments/{productsId}")
     public ResponseEntity<List<CommentResponseDto>> getComment(@PathVariable Long productsId) {
-        commentService.updateView(productsId);
+
         return new ResponseEntity<>(commentService.getComment(productsId), HttpStatus.OK);
+    }
+
+    @GetMapping("/comments/{productsId}/details")
+    public ResponseEntity<CommentDetailsDto> showComment (@PathVariable Long productsId) {
+        commentService.updateView(productsId);
+        return new ResponseEntity<>(commentService.showComment(productsId), HttpStatus.OK);
     }
 
     @PostMapping(value = "/comments/add", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
