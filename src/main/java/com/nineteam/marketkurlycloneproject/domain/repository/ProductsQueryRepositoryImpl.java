@@ -44,6 +44,7 @@ public class ProductsQueryRepositoryImpl implements ProductsQueryRepository {
     public Optional<ProductDetailResponse> getProductDetail(Long productId) {
         return Optional.ofNullable(query.select(
                         new QProductDetailResponse(
+                                products.id,
                                 products.title,
                                 products.image,
                                 products.desc,
