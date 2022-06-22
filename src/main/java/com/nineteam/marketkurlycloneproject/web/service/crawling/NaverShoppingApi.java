@@ -1,4 +1,4 @@
-package com.nineteam.marketkurlycloneproject.web.service;
+package com.nineteam.marketkurlycloneproject.web.service.crawling;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
