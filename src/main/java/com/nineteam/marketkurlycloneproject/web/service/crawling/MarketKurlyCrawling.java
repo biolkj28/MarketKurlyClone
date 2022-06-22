@@ -1,4 +1,4 @@
-package com.nineteam.marketkurlycloneproject.web.service;
+package com.nineteam.marketkurlycloneproject.web.service.crawling;
 
 import com.nineteam.marketkurlycloneproject.domain.model.Category;
 import com.nineteam.marketkurlycloneproject.domain.model.Products;
@@ -16,14 +16,15 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
+
 
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class MarketKurlyCrawling {
 
@@ -119,9 +120,8 @@ public class MarketKurlyCrawling {
         TopCategoryMap map = storedCategory();
         HashMap<String, List<String>> categoryMap = map.getCategoryMap();
         HashMap<String, Long> topCategoryIdMap = map.getTopCategoryMap();
-        // 검색 용어로 분류
-        int searchCnt = 0;
 
+        // 검색 용어로 분류
         for (String s : categoryMap.keySet()) {
             List<String> subs = categoryMap.get(s);
             String search = null;
@@ -146,7 +146,6 @@ public class MarketKurlyCrawling {
                 } else {
                     search = BASIC + sub;
                 }
-                searchCnt++;
 
                 List<ProductResponseDto> productResponseDtoList = api.getShoppingData(search);
 

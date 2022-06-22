@@ -4,6 +4,8 @@ import com.nineteam.marketkurlycloneproject.domain.model.Category;
 import com.nineteam.marketkurlycloneproject.domain.model.Products;
 import com.nineteam.marketkurlycloneproject.domain.model.QCategory;
 import com.nineteam.marketkurlycloneproject.domain.model.QProducts;
+import com.nineteam.marketkurlycloneproject.web.dto.MainForProductResponseDto;
+import com.nineteam.marketkurlycloneproject.web.dto.QMainForProductResponseDto;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.aspectj.lang.annotation.Before;
 import org.assertj.core.api.Assertions;
@@ -24,6 +26,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 import static com.nineteam.marketkurlycloneproject.domain.model.QCategory.category;
+import static com.nineteam.marketkurlycloneproject.domain.model.QProducts.products;
 
 //@DataJpaTest
 @SpringBootTest
@@ -45,6 +48,8 @@ public class ProductsSelectTest {
     @DisplayName("카테고리 조회")
     @Transactional
     void 카테고리조회() {
+
+
         JPAQuery<Category> query = new JPAQuery<>(em);
         QCategory qCategory = new QCategory("a");
         QCategory qCategory1 = new QCategory("b");
@@ -55,13 +60,38 @@ public class ProductsSelectTest {
                 .fetchJoin()
                 .distinct()
                 .fetch();
+
+
+        Assertions.assertThat(category.size()).isEqualTo(4);
         for (Category category1 : category) {
-            if(category1.getSubCategory().size() == 5){
+            if (category1.getSubCategory().size() == 5) {
                 Assertions.assertThat(category1.getSubCategory().size()).isEqualTo(5);
             }
 
         }
-
-
     }
+
+    @Test
+    @DisplayName("메인 페이지 상품 조회")
+    @Transactional
+    void 메인페이지상품조회() {
+        // 각 카테고리별 1개
+
+        JPAQuery<Products> query = new JPAQuery<>(em);
+
+        List<MainForProductResponseDto> products = query
+                .select(new QMainForProductResponseDto(
+                        QProducts.products.id,
+                        QProducts.products.image,
+                        QProducts.products.title,
+                        QProducts.products.lprice
+                ))
+                .from(QProducts.products)
+                .limit(20)
+                .fetch();
+
+        Assertions.assertThat(products.size()).isEqualTo(22);
+    }
+
+
 };
