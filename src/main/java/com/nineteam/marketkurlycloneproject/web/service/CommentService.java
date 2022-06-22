@@ -88,11 +88,11 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new IllegalArgumentException("유효하지 않는 댓글입니다."));
 
-        if(Objects.equals(comment.getUser().getLoginId(), userDetails.getUsername())) {
+        if (Objects.equals(comment.getUser().getLoginId(), userDetails.getUsername())) {
             commentRequestDto.setCommentImg(comment.getCommentImg());
             commentRequestDto.setFileName(comment.getFileName());
             comment.update(commentRequestDto);
-        }else throw new IllegalArgumentException("작성자와 로그인 정보가 다릅니다.");
+        } else throw new IllegalArgumentException("작성자와 로그인 정보가 다릅니다.");
     }
 
     @Transactional
@@ -100,11 +100,17 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
 
-        if(Objects.equals(comment.getUser().getLoginId(), userDetails.getUsername())) {
+        if (Objects.equals(comment.getUser().getLoginId(), userDetails.getUsername())) {
             amazonS3Client.deleteObject(S3Bucket, comment.getFileName());
             commentRepository.deleteById(commentId);
-        }else throw new IllegalArgumentException("작성자와 로그인 정보가 다릅니다.");
+        } else throw new IllegalArgumentException("작성자와 로그인 정보가 다릅니다.");
     }
+
+    @Transactional
+    public int updateView(Long id) {
+        return commentRepository.updateView(id);
+    }
+
 
     @Transactional
     public FileDataDto saveImage(MultipartFile multipartFile) {

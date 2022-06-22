@@ -23,7 +23,7 @@ public class CommentController {
 
     @GetMapping("/comments/{productsId}")
     public ResponseEntity<List<CommentResponseDto>> getComment(@PathVariable Long productsId) {
-
+        commentService.updateView(productsId);
         return new ResponseEntity<>(commentService.getComment(productsId), HttpStatus.OK);
     }
 
