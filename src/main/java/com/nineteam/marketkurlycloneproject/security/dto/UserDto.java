@@ -1,6 +1,5 @@
 package com.nineteam.marketkurlycloneproject.security.dto;
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
@@ -31,7 +30,7 @@ public class UserDto {
     @Size(min = 2, max = 8, message = "닉네임을 2자 이상 8자 이하로 입력해주세요")
     private String nickname;
 
-//    @NotNull(message = "주소를 입력해주세요")
-//    private String address;
+    @NotNull(message = "주소를 입력해주세요")
+    private String address;
 
 }

@@ -1,6 +1,7 @@
 package com.nineteam.marketkurlycloneproject.web.dto;
 
 import com.nineteam.marketkurlycloneproject.domain.model.Comment;
+import com.nineteam.marketkurlycloneproject.domain.model.Products;
 import com.nineteam.marketkurlycloneproject.security.model.User;
 import lombok.Getter;
 import lombok.Setter;

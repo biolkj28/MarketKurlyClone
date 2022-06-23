@@ -39,7 +39,7 @@ public class UserService {
                 .loginId(userDto.getLoginId())
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .nickName(userDto.getNickname())
-//                .address(userDto.getAddress())
+                .address(userDto.getAddress())
                 .role("ROLE_USER")
                 .build();
         userRepository.save(user);
