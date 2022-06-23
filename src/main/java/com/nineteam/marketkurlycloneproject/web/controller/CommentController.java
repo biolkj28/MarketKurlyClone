@@ -1,13 +1,17 @@
 package com.nineteam.marketkurlycloneproject.web.controller;
 
 import com.nineteam.marketkurlycloneproject.security.dto.ResponseDto;
+import com.nineteam.marketkurlycloneproject.web.dto.CommentListResponseDto;
 import com.nineteam.marketkurlycloneproject.web.dto.CommentRequestDto;
 import com.nineteam.marketkurlycloneproject.web.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,6 +19,11 @@ import org.springframework.web.bind.annotation.*;
 public class CommentController {
 
     private final CommentService commentService;
+
+    @GetMapping("/list/{productId}")
+    public ResponseEntity<List<CommentListResponseDto>> getComments(@PathVariable Long productId){
+        return new ResponseEntity<>(commentService.getComments(productId), HttpStatus.OK);
+    }
 
     @PostMapping("/{productId}/add")
     public ResponseEntity<ResponseDto> createComment(@PathVariable Long productId,

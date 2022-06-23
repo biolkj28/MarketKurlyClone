@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Entity
-public class Comment{
+public class Comment extends TimeStamped{
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -26,7 +26,7 @@ public class Comment{
     @Column
     private String comment_image;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;
 

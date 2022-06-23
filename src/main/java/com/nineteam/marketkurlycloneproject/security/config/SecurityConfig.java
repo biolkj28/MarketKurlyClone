@@ -60,6 +60,7 @@ public class SecurityConfig {
                 .antMatchers("/", "/user/**", "/css/**", "/images/**", "/comment/**",
                         "/js/**", "/h2-console/**", "/favicon.ico").permitAll()
                 .antMatchers("/product/**").permitAll()
+                .antMatchers("/comment/list/**").permitAll()
                 .anyRequest().authenticated()
 
                 .and()   // JwtFilter 를 등록한 JwtSecurityConfig 적용

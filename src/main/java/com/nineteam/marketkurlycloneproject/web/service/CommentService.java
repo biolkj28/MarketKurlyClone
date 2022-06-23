@@ -2,17 +2,21 @@ package com.nineteam.marketkurlycloneproject.web.service;
 
 import com.nineteam.marketkurlycloneproject.domain.model.Comment;
 import com.nineteam.marketkurlycloneproject.domain.model.Products;
+import com.nineteam.marketkurlycloneproject.domain.repository.CommentQueryRepository;
 import com.nineteam.marketkurlycloneproject.domain.repository.CommentRepository;
 import com.nineteam.marketkurlycloneproject.domain.repository.ProductRepository;
 import com.nineteam.marketkurlycloneproject.security.dto.ResponseDto;
 import com.nineteam.marketkurlycloneproject.security.model.User;
 import com.nineteam.marketkurlycloneproject.security.repository.UserRepository;
+import com.nineteam.marketkurlycloneproject.web.dto.CommentListResponseDto;
 import com.nineteam.marketkurlycloneproject.web.dto.CommentRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +25,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
+    private final CommentQueryRepository queryRepository;
 
     @Transactional
     public ResponseEntity<ResponseDto> createComment (Long productId, CommentRequestDto commentRequestDto, String loginId){
@@ -73,6 +78,10 @@ public class CommentService {
         return successAction("삭제");
     }
 
+    @Transactional
+    public List<CommentListResponseDto>getComments(Long id){
+        return queryRepository.getComments(id);
+    }
 
 
     public ResponseEntity<ResponseDto> checkIdAction(String action) {
