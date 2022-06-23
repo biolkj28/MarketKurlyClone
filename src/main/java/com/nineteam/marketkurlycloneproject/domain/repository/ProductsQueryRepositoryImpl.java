@@ -35,7 +35,7 @@ public class ProductsQueryRepositoryImpl implements ProductsQueryRepository {
                         products.lprice
                 ))
                 .from(products)
-                .orderBy(NumberExpression.random().asc())
+                .orderBy(products.title.asc())
                 .limit(20)
                 .fetch();
     }
