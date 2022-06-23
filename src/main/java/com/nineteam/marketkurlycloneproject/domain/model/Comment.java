@@ -30,7 +30,7 @@ public class Comment extends TimeStamped{
     @JoinColumn(name = "userId")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "porductId")
     private Products products;
 
