@@ -18,9 +18,11 @@ public class CommentListResponseDto {
     private String username;
     private String createdDate;
 
-    @QueryProjection
 
-    public CommentListResponseDto(Long commentId, String title, String comment_image, String comment, String username, LocalDateTime createdDate) {
+
+    @QueryProjection
+    public CommentListResponseDto(Long productId, Long commentId, String title, String comment_image, String comment, String username, LocalDateTime createdDate) {
+        this.productId = productId;
         this.commentId = commentId;
         this.title = title;
         this.comment_image = comment_image;
