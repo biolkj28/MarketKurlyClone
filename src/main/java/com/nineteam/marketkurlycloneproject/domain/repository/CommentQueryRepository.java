@@ -35,6 +35,7 @@ public class CommentQueryRepository {
                 .innerJoin(comment1.user,user)
                 .innerJoin(comment1.products,products)
                 .where(comment1.products.id.eq(productId))
+                .orderBy(comment1.createdAt.desc())
                 .fetch();
     }
 
